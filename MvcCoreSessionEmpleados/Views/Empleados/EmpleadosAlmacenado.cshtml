@@ -1,0 +1,42 @@
+﻿@{
+    List<Empleado> empleados = Context.Session.GetObject<List<Empleado>>("EMPLEADOS");
+}
+
+<h1 style="color:blue">Empleados almacenados session</h1>
+
+<p>
+    <a asp-controller="Empleados" asp-action="SessionEmpleados">Volver a session empleados</a>
+</p>
+
+@if (empleados != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Apellido</th>
+                <th>Oficio</th>
+                <th>Salario</th>
+                <th>Id Departamento</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Empleado emp in empleados)
+            {
+                <tr>
+                    <td>@emp.IdEmpleado</td>
+                    <td>@emp.Apellido</td>
+                    <td>@emp.Oficio</td>
+                    <td>@emp.Salario</td>
+                    <td>@emp.IdDepartamento</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h2 style="color:red">
+        No tienes empleados almacenados la Session
+    </h2>
+}
