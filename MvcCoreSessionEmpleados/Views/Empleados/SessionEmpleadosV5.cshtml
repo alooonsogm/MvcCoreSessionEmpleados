@@ -1,0 +1,62 @@
+﻿@model List<Empleado>
+
+@{
+    //Necesitas sesion en la vista para comprobar sus datos.
+    List<int> ids = Context.Session.GetObject<List<int>>("IDSEMPLEADOSV5");
+    List<Empleado> empleadosFav = this.memoryCache.Get<List<Empleado>>("FAVORITOS");
+}
+
+<h1 style="color:mediumpurple">Session Empleados V5</h1>
+
+<p>
+    <a asp-controller="Empleados" asp-action="EmpleadosAlmacenadoV5">Mostrar Empleados Almacenado v5</a>
+    <a asp-controller="Empleados" asp-action="EmpleadosFavoritos">Empleados Favoritos</a>
+</p>
+
+@if (ids != null)
+{
+    <h4 style="color:pink">Empleados en session: @ids.Count</h4>
+}
+else
+{
+    <h4 style="color:pink">Empleados en session: <b>0</b></h4>
+}
+
+@if (empleadosFav != null)
+{
+    <h4 style="color:brown">Empleados favoritos: @empleadosFav.Count</h4>
+}
+else
+{
+    <h4 style="color:brown">Empleados favoritos: <b>0</b></h4>
+}
+
+@if (Model != null)
+{
+    <ul class="list-group">
+        @foreach (Empleado empleado in Model)
+        {
+            <li class="list-group-item list-group-item-warning">
+                @empleado.Apellido
+                <a asp-controller="Empleados" asp-action="SessionEmpleadosV5" asp-route-idFavorito="@empleado.IdEmpleado" class="btn btn-warning">Favorito</a>
+                @if(ids == null)
+                {
+                    //No tenemos sesion
+                    <a asp-controller="Empleados" asp-action="SessionEmpleadosV5" asp-route-idEmpleado="@empleado.IdEmpleado" class="btn btn-warning">Almacenar Empleado</a>
+                }
+                else
+                {
+                    //Buscamos si el empleado que estamos recorriendo esta en la lista
+                    if (ids.Contains(empleado.IdEmpleado))
+                    {
+                        <img src="~/images/ok.jpg" alt="fotoOk" height="40px" width="40px"/>
+                    }
+                    else
+                    {
+                        <a asp-controller="Empleados" asp-action="SessionEmpleadosV5" asp-route-idEmpleado="@empleado.IdEmpleado" class="btn btn-warning">Almacenar Empleado</a>
+                    }
+                }
+            </li>
+        }
+    </ul>
+}
