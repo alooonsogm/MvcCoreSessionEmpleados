@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@{
+    List<int> ids = Context.Session.GetObject<List<int>>("IDSEMPLEADOSV5");
+    List<Empleado> empleadosFav = this.memoryCache.Get<List<Empleado>>("FAVORITOS");
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -22,6 +27,24 @@
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Empleados" asp-action="Index">Menu Session</a>
+                        </li>
+                        <li class="nav-item">
+                            @if (ids != null)
+                            {
+                                <h6 style="color:green">Empleados en session: @ids.Count</h6>
+                            }
+                            else
+                            {
+                                <h6 style="color:green">Empleados en session: <b>0</b></h6>
+                            }
+                            @if (empleadosFav != null)
+                            {
+                                <h6 style="color:darkblue">Empleados favoritos: @empleadosFav.Count</h6>
+                            }
+                            else
+                            {
+                                <h6 style="color:darkblue">Empleados favoritos: <b>0</b></h6>
+                            }
                         </li>
                     </ul>
                 </div>

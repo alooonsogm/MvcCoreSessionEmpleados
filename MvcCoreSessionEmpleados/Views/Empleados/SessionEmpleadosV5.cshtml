@@ -38,7 +38,27 @@ else
         {
             <li class="list-group-item list-group-item-warning">
                 @empleado.Apellido
-                <a asp-controller="Empleados" asp-action="SessionEmpleadosV5" asp-route-idFavorito="@empleado.IdEmpleado" class="btn btn-warning">Favorito</a>
+
+                @if (empleadosFav == null)
+                {
+                    //No tenemos cache
+                    <a asp-controller="Empleados" asp-action="SessionEmpleadosV5" asp-route-idFavorito="@empleado.IdEmpleado" class="btn btn-info">Favorito</a>
+                }
+                else
+                {
+                    //No sirve el Contains ya que vienen de diferentes lados, uno viene de la list del model y el otro del cache.
+                    //Por mucho que los datos sean iguales al venir de sientos diferentes no funciona el contains.
+                    Empleado empFavorito = empleadosFav.Find(z => z.IdEmpleado == empleado.IdEmpleado);
+                    if (empFavorito != null)
+                    {
+                        <img src="~/images/ok.jpg" alt="fotoOk" height="40px" width="40px" />
+                    }
+                    else
+                    {
+                        <a asp-controller="Empleados" asp-action="SessionEmpleadosV5" asp-route-idFavorito="@empleado.IdEmpleado" class="btn btn-info">Favorito</a>
+                    }
+                }
+
                 @if(ids == null)
                 {
                     //No tenemos sesion
